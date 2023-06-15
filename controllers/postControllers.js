@@ -5,10 +5,10 @@ import Posts from "../models/Posts.js";
 export const getAllPosts = async (req, res) => {
     // res.json({msg: "Display all Posts..."});
     try {
-        const posts = await Posts.find({}).sort({createdAt: -1})
-        res.status(200).json({posts});
-    } catch(err) {
-        res.status(404).json({error: err.message})
+        const posts = await Posts.find({}).sort({ createdAt: -1 })
+        res.status(200).json(posts);
+    } catch (err) {
+        res.status(404).json({ error: err.message })
     }
 };
 
@@ -16,16 +16,16 @@ export const getAllPosts = async (req, res) => {
 export const getPost = async (req, res) => {
     // res.json({msg: "Single Post..."})
 
-    const {id} = req.params;
+    const { id } = req.params;
     // id check up => whether id is correct format
-    if(!mongoose.Types.ObjectId.isValid(id))    return res.status(400).json({error: "post does not exit..."});
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: "post does not exit..." });
 
     try {
         const post = await Posts.findById(id);
-        if(!post) return res.status(404).json({error: "post does not exist..."});
+        if (!post) return res.status(404).json({ error: "post does not exist..." });
         res.status(200).json(post)
-    } catch(err) {
-        res.status(404).json({error: err.message});
+    } catch (err) {
+        res.status(404).json({ error: err.message });
     }
 
 }
@@ -33,17 +33,17 @@ export const getPost = async (req, res) => {
 // create Post
 export const createPost = async (req, res) => {
     // res.json({msg: "Post Created..."})
-    
-    
+
+
     // getting the data from body in json form
-    const {date, title, content} = req.body;
+    const { date, title, content } = req.body;
 
     try {
         // new Post({}) and save() => both together ===> create
-        const post = await Posts.create({date, title, content});
+        const post = await Posts.create({ date, title, content });
         res.status(200).json(post);
-    } catch(err) {
-        res.status(400).json({error: err.message});
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
 }
 
@@ -51,17 +51,17 @@ export const createPost = async (req, res) => {
 export const updatePost = async (req, res) => {
     // res.json({msg: "Posted updated..."})
 
-    const {id} = req.params;
+    const { id } = req.params;
     // id check up => whether id is correct format
-    if(!mongoose.Types.ObjectId.isValid(id))    return res.status(400).json({error: "post does not exit..."});
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: "post does not exit..." });
 
     try {
         const post = await Posts.findById(id);
-        if(!post) return res.status(404).json({error: "post does not exist..."});
-        const updatedPost = await Posts.findOneAndUpdate({_id: id}, {...req.body})
+        if (!post) return res.status(404).json({ error: "post does not exist..." });
+        const updatedPost = await Posts.findOneAndUpdate({ _id: id }, { ...req.body })
         res.status(200).json(updatedPost)
-    } catch(err) {
-        res.status(404).json({error: err.message});
+    } catch (err) {
+        res.status(404).json({ error: err.message });
     }
 }
 
@@ -69,16 +69,16 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
     // res.json({msg: "Post Deleted..."})
 
-    const {id} = req.params;
+    const { id } = req.params;
     // id check up => whether id is correct format
-    if(!mongoose.Types.ObjectId.isValid(id))    return res.status(400).json({error: "post does not exit..."});
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: "post does not exit..." });
 
     try {
         const post = await Posts.findById(id);
-        if(!post) return res.status(404).json({error: "post does not exist..."});
-        const deletedPost = await Posts.findOneAndDelete({_id: id});
+        if (!post) return res.status(404).json({ error: "post does not exist..." });
+        const deletedPost = await Posts.findOneAndDelete({ _id: id });
         res.status(200).json(deletePost)
-    } catch(err) {
-        res.status(404).json({error: err.message});
+    } catch (err) {
+        res.status(404).json({ error: err.message });
     }
 }
