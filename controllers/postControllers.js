@@ -59,7 +59,7 @@ export const updatePost = async (req, res) => {
         const post = await Posts.findById(id);
         if (!post) return res.status(404).json({ error: "post does not exist..." });
         const updatedPost = await Posts.findOneAndUpdate({ _id: id }, { ...req.body })
-        res.status(200).json(updatedPost)
+        res.status(200).json(post)
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
@@ -77,7 +77,7 @@ export const deletePost = async (req, res) => {
         const post = await Posts.findById(id);
         if (!post) return res.status(404).json({ error: "post does not exist..." });
         const deletedPost = await Posts.findOneAndDelete({ _id: id });
-        res.status(200).json(deletePost)
+        res.status(200).json(post)
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
