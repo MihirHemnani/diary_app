@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from 'cors';
 import PostRoutes from "./routes/posts.js";
+import UserRoutes from "./routes/users.js";
 
 const app = express();
 dotenv.config();
@@ -29,6 +30,7 @@ const connectDatabase = async () => {
 
 // creating the routes
 app.use('/api/posts', PostRoutes)
+app.use('/api/user', UserRoutes)
 
 connectDatabase().then(() => {
     app.listen(process.env.PORT, () => {
