@@ -27,7 +27,7 @@ const connectDatabase = async () => {
             useUnifiedTopology: true
         })
 
-        console.log("Mongoose Connected");
+        // console.log("Mongoose Connected");
     } catch (err) {
         console.error(err);
     }
@@ -39,7 +39,7 @@ app.use('/api/user', UserRoutes)
 
 connectDatabase().then(() => {
     app.listen(process.env.PORT, () => {
-        console.log(`HI I am Server. Running on ${process.env.PORT}`);
+        // console.log(`HI I am Server...`);
     });
 }).catch((err) => {
     console.error(err);
