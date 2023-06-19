@@ -3,9 +3,11 @@ import Posts from "../models/Posts.js";
 
 // display all posts
 export const getAllPosts = async (req, res) => {
+    const user_id = req.user._id;
+    // console.log(id)
     // res.json({msg: "Display all Posts..."});
     try {
-        const posts = await Posts.find({}).sort({ createdAt: -1 })
+        const posts = await Posts.find({ user_id }).sort({ createdAt: -1 })
         res.status(200).json(posts);
     } catch (err) {
         res.status(404).json({ error: err.message })
@@ -33,14 +35,14 @@ export const getPost = async (req, res) => {
 // create Post
 export const createPost = async (req, res) => {
     // res.json({msg: "Post Created..."})
-
-
+    const user_id = req.user._id;
+    // console.log(id)
     // getting the data from body in json form
     const { date, title, content } = req.body;
 
     try {
         // new Post({}) and save() => both together ===> create
-        const post = await Posts.create({ date, title, content });
+        const post = await Posts.create({ date, title, content, user_id });
         res.status(200).json(post);
     } catch (err) {
         res.status(400).json({ error: err.message });
