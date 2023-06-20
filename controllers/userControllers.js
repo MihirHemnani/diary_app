@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-const createToken = (id) => {
+const createToken = (_id) => {
     return jwt.sign(
-        { id },
+        { _id },
         process.env.JWT_SECRET,
         { expiresIn: '3d' }
     )
@@ -35,8 +35,9 @@ export const loginUser = async (req, res) => {
     try {
 
         const user = await User.login(email, password);
+        // console.log(user);
         const token = createToken(user._id);
-        res.status(200).json({ email: user.email, token: token })
+        res.status(200).json({ email, token })
 
     } catch (err) {
         res.status(400).json({ error: err.message })
