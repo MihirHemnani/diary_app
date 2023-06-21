@@ -4,16 +4,18 @@ import Posts from "../models/Posts.js";
 // display all posts
 export const getAllPosts = async (req, res) => {
     const user_id = req.user._id;
+    const currentDateTime = new Date();
+    const formattedCurrentDateTime = currentDateTime.toISOString()
+
     // console.log(id)
     // res.json({msg: "Display all Posts..."});
     try {
-        const posts = await Posts.find({ user_id }).sort({ createdAt: -1 })
+        const posts = await Posts.find({ user_id, createdAt: { $lte: formattedCurrentDateTime } }).sort({ createdAt: -1 })
         res.status(200).json(posts);
     } catch (err) {
         res.status(404).json({ error: err.message })
     }
 };
-
 // display a specific post
 export const getPost = async (req, res) => {
     // res.json({msg: "Single Post..."})
