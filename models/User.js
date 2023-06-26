@@ -15,9 +15,6 @@ const UserModel = new Schema({
         type: String,
         required: true
     },
-    resetToken: {
-        type: String
-    }
 }, {
     collection: "users",
     timestamps: true
