@@ -25,7 +25,7 @@ const tokenforpasswordreset = (_id) => {
     return jwt.sign(
         { _id },
         process.env.JWT_SECRET,
-        { expiresIn: '10s' }
+        { expiresIn: '120s' }
     )
 }
 
