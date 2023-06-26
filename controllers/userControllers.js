@@ -25,7 +25,7 @@ const tokenforpasswordreset = (_id) => {
     return jwt.sign(
         { _id },
         process.env.JWT_SECRET,
-        { expiresIn: '120s' }
+        { expiresIn: '1d' }
     )
 }
 
@@ -74,6 +74,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
         const token = tokenforpasswordreset(user._id);
         // store token to db
         const setUserToken = await User.findByIdAndUpdate({ _id: user._id }, { resetToken: token }, { new: true })
+        setUserToken.save()
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -130,17 +131,18 @@ export const validUser = async (req, res) => {
 
     try {
         // find user
-        const user = await User.findOne({ _id: id }, { new: true })
+        const user = await User.findOne({ _id: id })
         // verify the token
+        // console.log(user)
         const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
-        // console.log(id, verifyToken._id)
+        // console.log(verifyToken)
         if (user && verifyToken._id) {
             res.status(200).json({ message: "valid user" })
         } else {
             res.status(400).json({ message: "user not valid" })
         }
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ message: err });
     }
 }
 
@@ -151,7 +153,7 @@ export const forgetPassword = async (req, res) => {
 
     try {
         // find user
-        const user = await User.findById({ _id: id })
+        const user = await User.findOne({ _id: id })
         // verify the token
         const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
         if (!validator.isStrongPassword(newpassword)) {
