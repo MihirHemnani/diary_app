@@ -83,7 +83,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                 <div>
                     <p>
                         Click here to reset -> 
-                        <a href="https://dairy-post.onrender.com/${user._id}/${token}"
+                        <a href="https://dairy-post.onrender.com/api/password_reset/${user._id}/${token}"
                             target="_blank"
                             data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/password/reset/confirm/Y2FwMjc0MTh8YzAzMTBmfDBjMzljYWM5ZjMyMTkw&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw0EIrZr9hGys7aEERWCo8CE">
                             Reset Link 
@@ -91,7 +91,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                     </p>    
                     <p>(valid for 2 min)</p>
                     <p>(Clicking not working? Try pasting it into your browser!)</p>
-                    <p>https://dairy-post.onrender.com/${user._id}/${token}</p>
+                    <p>https://dairy-post.onrender.com/api/password_reset/${user._id}/${token}</p>
                 </div>
                 <div>
                     <small>This is a service email related to your use of 
