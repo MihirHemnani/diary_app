@@ -62,12 +62,12 @@ export const loginUser = async (req, res) => {
     }
 }
 
-// forget password
-export const forgetPassword = async (req, res) => {
+// send reset password link
+export const sendResetPasswordLinkToUser = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await User.forgetPassword(email);
+        const user = await User.sendResetPasswordLink(email);
         const token = tokenforpasswordreset(user._id);
         const mailOptions = {
             from: process.env.EMAIL,
@@ -84,10 +84,12 @@ export const forgetPassword = async (req, res) => {
                         <a href="https://dairy-post.onrender.com"
                             target="_blank"
                             data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/password/reset/confirm/Y2FwMjc0MTh8YzAzMTBmfDBjMzljYWM5ZjMyMTkw&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw0EIrZr9hGys7aEERWCo8CE">
-                            Reset Link
+                            Reset Link 
                         </a>
                     </p>    
+                    <p>(valid for 2 min)</p>
                     <p>(Clicking not working? Try pasting it into your browser!)</p>
+                    <p></p>
                 </div>
                 <div>
                     <small>This is a service email related to your use of 

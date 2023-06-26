@@ -53,7 +53,7 @@ UserModel.statics.login = async function (email, password) {
     return user;
 }
 
-UserModel.statics.forgetPassword = async function (email) {
+UserModel.statics.sendResetPasswordLink = async function (email) {
     if (!email) throw Error("all fields required")
 
     const user = await this.findOne({ email });
