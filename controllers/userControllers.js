@@ -75,15 +75,16 @@ export const forgetPassword = async (req, res) => {
             subject: "Reset Password",
             html: `
             <div>
-                <p>Hi ${user.username}</p>
+                <p>Hi ${user.username},</p>
                 <p>We received a request to reset the <span class="il">password</span> for your account.</p>
                 <p>If you made this request, click the link below. If not, you can ignore this email.</p>
                 <div>
                     <p>
+                        Click here to reset -> 
                         <a href="https://dairy-post.onrender.com"
                             target="_blank"
                             data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/password/reset/confirm/Y2FwMjc0MTh8YzAzMTBmfDBjMzljYWM5ZjMyMTkw&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw0EIrZr9hGys7aEERWCo8CE">
-                            Link
+                            Reset Link
                         </a>
                     </p>    
                     <p>(Clicking not working? Try pasting it into your browser!)</p>
