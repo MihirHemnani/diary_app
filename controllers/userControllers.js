@@ -74,7 +74,7 @@ export const forgetPassword = async (req, res) => {
             to: email,
             subject: "Reset Password",
             html: `
-            <div>
+            <div class="color: black">
                 <p>Hi ${user.username},</p>
                 <p>We received a request to reset the <span class="il">password</span> for your account.</p>
                 <p>If you made this request, click the link below. If not, you can ignore this email.</p>
@@ -99,7 +99,6 @@ export const forgetPassword = async (req, res) => {
                     </small>
                 </div>
             </div>
-                        
             `
         }
 
