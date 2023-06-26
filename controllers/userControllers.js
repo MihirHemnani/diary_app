@@ -1,6 +1,9 @@
-import jwt from "jsonwebtoken";
+import jwt, { verify } from "jsonwebtoken";
 import nodemailer from 'nodemailer';
 import User from "../models/User.js";
+import bcrypt from 'bcrypt'
+import validator from 'validator'
+
 
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -22,7 +25,7 @@ const tokenforpasswordreset = (_id) => {
     return jwt.sign(
         { _id },
         process.env.JWT_SECRET,
-        { expiresIn: '1d' }
+        { expiresIn: '10s' }
     )
 }
 
@@ -120,14 +123,17 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
     }
 }
 
+// valid user
 export const validUser = async (req, res) => {
-    const { _id, token } = req.params;
+    const { id, token } = req.params;
+    // console.log(req)
 
     try {
         // find user
-        const user = User.findOne({ _id, resetToken: token })
+        const user = await User.findOne({ _id: id }, { new: true })
         // verify the token
-        const verifyToken = jwt.verify(token, JWT_SECRET);
+        const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+        // console.log(id, verifyToken._id)
         if (user && verifyToken._id) {
             res.status(200).json({ message: "valid user" })
         } else {
@@ -138,15 +144,19 @@ export const validUser = async (req, res) => {
     }
 }
 
+// forget password
 export const forgetPassword = async (req, res) => {
-    const { _id, token } = req.params;
-    const { newpassword } = req.newpassword;
+    const { id, token } = req.params;
+    const { newpassword } = req.body;
 
     try {
         // find user
-        const user = User.findOne({ _id, resetToken: token })
+        const user = await User.findById({ _id: id })
         // verify the token
-        const verifyToken = jwt.verify(token, JWT_SECRET);
+        const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+        if (!validator.isStrongPassword(newpassword)) {
+            res.status(400).json({ message: "Enter strong password" })
+        }
         if (user && verifyToken._id) {
             const salt = await bcrypt.genSalt(10);
             const hash_password = await bcrypt.hash(newpassword, salt);
@@ -157,6 +167,6 @@ export const forgetPassword = async (req, res) => {
             res.status(400).json({ message: "user not valid" })
         }
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ message: "Something went wrong..." });
     }
 }
