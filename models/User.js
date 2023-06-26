@@ -53,4 +53,13 @@ UserModel.statics.login = async function (email, password) {
     return user;
 }
 
+UserModel.statics.forgetPassword = async function (email) {
+    if (!email) throw Error("all fields required")
+
+    const user = await this.findOne({ email });
+    if (!user) throw Error("Email not Registered")
+
+    return user;
+}
+
 export default model("Users", UserModel);
