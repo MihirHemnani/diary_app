@@ -69,6 +69,8 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
     try {
         const user = await User.sendResetPasswordLink(email);
         const token = tokenforpasswordreset(user._id);
+        // store token to db
+        const setUserToken = await User.findByIdAndUpdate({ _id: user._id }, { resetToken: token }, { new: true })
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -81,7 +83,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                 <div>
                     <p>
                         Click here to reset -> 
-                        <a href="https://dairy-post.onrender.com"
+                        <a href="https://dairy-post.onrender.com/${user._id}/${token}"
                             target="_blank"
                             data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/password/reset/confirm/Y2FwMjc0MTh8YzAzMTBmfDBjMzljYWM5ZjMyMTkw&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw0EIrZr9hGys7aEERWCo8CE">
                             Reset Link 
@@ -89,7 +91,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                     </p>    
                     <p>(valid for 2 min)</p>
                     <p>(Clicking not working? Try pasting it into your browser!)</p>
-                    <p></p>
+                    <p>https://dairy-post.onrender.com/${user._id}/${token}</p>
                 </div>
                 <div>
                     <small>This is a service email related to your use of 
@@ -109,11 +111,52 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                 console.log(error);
                 res.status(400).json({ error: "Something went wrong..." })
             } else {
-                res.status(200).json({ info, token });
+                res.status(200).json({ message: "Link Sent..." });
             }
         })
     } catch (err) {
         res.status(400).json({ error: err.message })
         console.log(err)
+    }
+}
+
+export const validUser = async (req, res) => {
+    const { _id, token } = req.params;
+
+    try {
+        // find user
+        const user = User.findOne({ _id, resetToken: token })
+        // verify the token
+        const verifyToken = jwt.verify(token, JWT_SECRET);
+        if (user && verifyToken._id) {
+            res.status(200).json({ message: "valid user" })
+        } else {
+            res.status(400).json({ message: "user not valid" })
+        }
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+}
+
+export const forgetPassword = async (req, res) => {
+    const { _id, token } = req.params;
+    const { newpassword } = req.newpassword;
+
+    try {
+        // find user
+        const user = User.findOne({ _id, resetToken: token })
+        // verify the token
+        const verifyToken = jwt.verify(token, JWT_SECRET);
+        if (user && verifyToken._id) {
+            const salt = await bcrypt.genSalt(10);
+            const hash_password = await bcrypt.hash(newpassword, salt);
+            const setUserPassword = await User.findByIdAndUpdate({ _id: user._id }, { password: hash_password });
+            setUserPassword.save()
+            res.status(200).json({ message: "Password Updated" })
+        } else {
+            res.status(400).json({ message: "user not valid" })
+        }
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
 }
