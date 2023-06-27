@@ -1,4 +1,4 @@
-import jwt, { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import nodemailer from 'nodemailer';
 import User from "../models/User.js";
 import bcrypt from 'bcrypt'
@@ -18,7 +18,7 @@ const tokenforpasswordreset = (_id) => {
     return jwt.sign(
         { _id },
         process.env.JWT_SECRET,
-        { expiresIn: '300s' }
+        { expiresIn: '5m' }
     )
 }
 
