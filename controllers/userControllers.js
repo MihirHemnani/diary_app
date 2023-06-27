@@ -73,40 +73,90 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
         const user = await User.sendResetPasswordLink(email);
         const token = tokenforpasswordreset(user._id);
         // store token to db
-        const setUserToken = await User.findByIdAndUpdate({ _id: user._id }, { resetToken: token }, { new: true })
-        setUserToken.save()
+        const charset = "0123456789"
+        let otp = '';
+
+        for (let i = 0; i < 6; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            otp += charset[randomIndex];
+        }
+
+        const setUserToken = await User.findByIdAndUpdate({ _id: user._id }, { resetToken: token, resetOTP: otp }, { new: true })
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
             subject: "Reset Password",
             html: `
-            <div class="color: black">
-                <p>Hi ${user.username},</p>
-                <p>We received a request to reset the <span class="il">password</span> for your account.</p>
-                <p>If you made this request, click the link below. If not, you can ignore this email.</p>
-                <div>
-                    <p>
-                        Click here to reset -> 
-                        <a href="https://dairy-post.onrender.com/api/password_reset/${user._id}/${token}"
-                            target="_blank"
-                            data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/password/reset/confirm/Y2FwMjc0MTh8YzAzMTBmfDBjMzljYWM5ZjMyMTkw&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw0EIrZr9hGys7aEERWCo8CE">
-                            Reset Link 
-                        </a>
-                    </p>    
-                    <p>(valid for 2 min)</p>
-                    <p>(Clicking not working? Try pasting it into your browser!)</p>
-                    <p>https://dairy-post.onrender.com/api/password_reset/${user._id}/${token}</p>
+            <center style="width:750px;text-align:left">
+                <div style="max-width:600px;margin:auto">
+                    <span>
+                        <font color="#888888"></font>
+                    </span>
+                    <div style="font-family:arial,sans-serif;padding-top:30px">
+
+                        <span style="font-family:verdana,sans-serif">
+                            <center>
+                                <img style="width:100px; height: 100px;"
+                                    src="https://w7.pngwing.com/pngs/436/218/png-transparent-diary-illustration-diary-diary-and-pen-pencil-text-happy-birthday-vector-images.png"
+                                    </center>
+                                <br>​<br>
+                        </span>
+                    </div>
+                    <span style="width:75%">
+                        <font color="#888888"></font>
+
+                        <table style="max-width:500px" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="margin-top:20px;background-color:#ffffff">
+                                            <center>
+                                                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td id="m_-3293206260515622917mailbody"
+                                                                style="padding:40px;font-family:sans-serif;font-size:15px;line-height:20px;color:rgb(85,85,85)">
+
+
+                                                                <center>${user.username}<br>
+                                                                    Your <span class="il">OTP</span> is ${otp}<br>
+                                                                    Regards,<br>
+                                                                    Dairy App</center>
+
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </center>
+                                        </div>
+                                        <span>
+                                            <font color="#888888"></font>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </span>
+
+                    <span>
+                        <font color="#888888">
+                            <table style="padding-top:45px;max-width:680px" width="90%" cellspacing="0" cellpadding="0" border="0"
+                                align="center">
+                                <tbody>
+                                    <tr>
+                                        <td
+                                            style="padding:10px 10px;width:100%;font-size:12px;font-family:sans-serif;line-height:18px;text-align:center;color:rgb(136,136,136)">
+                                            <br>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </font>
+                    </span>
                 </div>
-                <div>
-                    <small>This is a service email related to your use of 
-                        <a href="https://dairy-post.onrender.com"
-                            target="_blank"
-                            data-saferedirecturl="https://www.google.com/url?q=https://lichess.org/&amp;source=gmail&amp;ust=1687867637836000&amp;usg=AOvVaw2VxR-qJUIKbrw4WEv5iTPn">
-                            <span>Dairy App</span>
-                        </a>.
-                    </small>
-                </div>
-            </div>
+
+            </center>
             `
         }
 
