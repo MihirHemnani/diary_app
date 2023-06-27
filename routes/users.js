@@ -1,6 +1,6 @@
 import express from 'express'
-import { signupUser, loginUser, sendResetPasswordLinkToUser, validUser, forgetPassword, checkOTP } from "../controllers/userControllers.js";
-
+import { signupUser, loginUser } from "../controllers/userControllers.js";
+import { checkOTP, forgetPassword, sendResetPasswordLinkToUser, validUser } from '../controllers/userPasswordControllers.js'
 const router = express.Router();
 
 router.post('/signup', signupUser)
