@@ -196,6 +196,29 @@ export const validUser = async (req, res) => {
     }
 }
 
+// otp check
+export const checkOTP = async (req, res) => {
+    const { id, token } = req.params;
+    const { otp } = req.body;
+
+    try {
+        // find user
+        const user = await User.findOne({ _id: id })
+        // verify the token
+        const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+
+        if (user && verifyToken._id && user.resetOTP === otp) {
+            res.status(200).json({ message: "Success", id: id, token: token })
+        } else if (user && verifyToken._id) {
+            res.status(400).json({ message: "Enter valid OTP" })
+        } else if (user) {
+            res.status(400).json({ message: "Link expired" })
+        }
+    } catch (err) {
+        res.status(400).json({ message: "Something went wrong..." });
+    }
+}
+
 // forget password
 export const forgetPassword = async (req, res) => {
     const { id, token } = req.params;
