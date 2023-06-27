@@ -38,7 +38,7 @@ export const loginUser = async (req, res) => {
         const user = await User.login(email, password);
         // console.log(user);
         const token = createToken(user._id);
-        res.status(200).json({ email, token })
+        res.status(200).json({ user, token })
 
     } catch (err) {
         res.status(400).json({ error: err.message })
