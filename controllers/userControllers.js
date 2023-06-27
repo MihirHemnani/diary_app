@@ -76,7 +76,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
         const charset = "0123456789"
         let otp = '';
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
             const randomIndex = Math.floor(Math.random() * charset.length);
             otp += charset[randomIndex];
         }
@@ -165,7 +165,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                 console.log(error);
                 res.status(400).json({ error: "Something went wrong..." })
             } else {
-                res.status(200).json({ message: "Link Sent..." });
+                res.status(200).json({ message: "Link Sent...", id: user._id, token: user.resetToken });
             }
         })
     } catch (err) {
