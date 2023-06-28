@@ -79,7 +79,7 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
 
 
                                                                 <center style="font-size: large;">
-                                                                    ${user.username}<br>
+                                                                    Hello ${user.username},<br>
                                                                     Your <span class="il">OTP</span> is ${user.resetOTP}<br>
                                                                     Regards,<br>
                                                                     Dairy App</center>
