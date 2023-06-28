@@ -101,12 +101,11 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
 
                     <span>
                         <font color="#888888">
-                            <table style="padding-top:45px;max-width:680px" width="90%" cellspacing="0" cellpadding="0" border="0"
-                                align="center">
+                            <table style="padding-top:45px;max-width:680px" width="100%" cellspacing="0" cellpadding="0" border="0">
                                 <tbody>
                                     <tr>
                                         <td
-                                            style="padding:10px 10px;width:100%;font-size:12px;font-family:sans-serif;line-height:18px;text-align:center;color:rgb(136,136,136)">
+                                            style="width:100%;font-size:12px;font-family:sans-serif;line-height:18px;text-align:center;color:rgb(136,136,136)">
                                             <br>
                                             This is a service email related to your use of
                                             <a href="https://dairy-post.onrender.com/">Dairy App</a> .
