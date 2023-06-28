@@ -35,8 +35,12 @@ export const loginUser = async (req, res) => {
 
     try {
 
-        const user = await User.login(email, password);
+        const login_user = await User.login(email, password);
         // console.log(user);
+        const user = {
+            username: login_user.username,
+            email: login_user.email,
+        }
         const token = createToken(user._id);
         res.status(200).json({ user, token })
 

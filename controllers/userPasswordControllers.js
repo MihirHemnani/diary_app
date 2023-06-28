@@ -45,39 +45,42 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
             to: email,
             subject: "Reset Password",
             html: `
-            <center style="width:750px;text-align:left">
-                <div style="max-width:600px;margin:auto">
+            <center style="width:750px;text-align:left;">
+                <div style="max-width:600px;margin:auto; background-color: white;">
                     <span>
                         <font color="#888888"></font>
                     </span>
                     <div style="font-family:arial,sans-serif;padding-top:30px">
 
-                        <span style="font-family:verdana,sans-serif">
-                            <center>
-                                <img style="width:100px; height: 100px;"
-                                    src="https://w7.pngwing.com/pngs/436/218/png-transparent-diary-illustration-diary-diary-and-pen-pencil-text-happy-birthday-vector-images.png"
-                                    </center>
-                                <br>​<br>
-                        </span>
                     </div>
-                    <span style="width:75%">
+                    <span style="width:100%">
                         <font color="#888888"></font>
 
                         <table style="max-width:500px" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div style="margin-top:20px;background-color:#ffffff">
+                                        <div style="margin-top:20px;background-color:#ffffff;">
                                             <center>
-                                                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                <table width="100%" cellspacing="2" cellpadding="1" border="1">
                                                     <tbody>
                                                         <tr>
+                                                            <td>
+                                                                <span style="font-family:verdana,sans-serif">
+                                                                    <center>
+                                                                        <img style="width:100px; height: 100px;"
+                                                                            src="https://w7.pngwing.com/pngs/436/218/png-transparent-diary-illustration-diary-diary-and-pen-pencil-text-happy-birthday-vector-images.png"
+                                                                            </center>
+                                                                        <br>​<br>
+                                                                </span>
+                                                            </td>
                                                             <td id="m_-3293206260515622917mailbody"
-                                                                style="padding:40px;font-family:sans-serif;font-size:15px;line-height:20px;color:rgb(85,85,85)">
+                                                                style="padding:30px;font-family:sans-serif;font-size:15px;line-height:20px;color:rgb(85,85,85)">
 
 
-                                                                <center>${user.username}<br>
-                                                                    Your <span class="il">OTP</span> is ${otp}<br>
+                                                                <center style="font-size: large;">
+                                                                    ${user.username}<br>
+                                                                    Your <span class="il">OTP</span> is ${user.resetOTP}<br>
                                                                     Regards,<br>
                                                                     Dairy App</center>
 
@@ -105,7 +108,8 @@ export const sendResetPasswordLinkToUser = async (req, res) => {
                                         <td
                                             style="padding:10px 10px;width:100%;font-size:12px;font-family:sans-serif;line-height:18px;text-align:center;color:rgb(136,136,136)">
                                             <br>
-
+                                            This is a service email related to your use of
+                                            <a href="https://dairy-post.onrender.com/">Dairy App</a> .
                                         </td>
                                     </tr>
                                 </tbody>
