@@ -32,11 +32,11 @@ const UserModel = new Schema({
 UserModel.statics.signup = async function (name, email, password) {
     if (!name || !email || !password) throw Error("all fields required")
     if (!validator.isEmail(email)) throw Error("invalid email id")
-    if (!validator.isStrongPassword(password)) throw Error("enter strong password")
 
     // checking if email already exist or not
     const user_exist = await this.findOne({ email });
     if (user_exist) throw Error("Email already exist...")
+    if (!validator.isStrongPassword(password)) throw Error("enter strong password")
 
     // encryption of password
     const salt = await bcrypt.genSalt(10);
